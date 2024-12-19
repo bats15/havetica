@@ -6,9 +6,9 @@ export default function HomeE() {
   const [textInput, setTextInput] = useState('');
   const [outputVideoUrl, setOutputVideoUrl] = useState(null);
 
-  const handleVideoUpload = (event) => {
-    setVideoFile(event.target.files[0]);
-  };
+  // const handleVideoUpload = (event) => {
+  //   setVideoFile(event.target.files[0]);
+  // };
 
   const handleTextChange = (event) => {
     setTextInput(event.target.value);
@@ -43,6 +43,35 @@ export default function HomeE() {
     }
   };
 
+  const handleVideoUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const tempFolderPath = '/Z:/Coding/Nextjs/hevetica/havetica/temp/';
+      const filePath = tempFolderPath + file.name;
+      // Assuming you have a backend endpoint to handle file storage
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('path', filePath);
+
+      fetch('/api/upload-file', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            setVideoFile(filePath);
+            alert('Video uploaded successfully.');
+          } else {
+            alert('Error uploading the video.');
+          }
+        })
+        .catch(error => {
+          alert('Failed to upload the video.');
+        });
+    }
+  };
+
   return (
     <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
       <h1>Video to Reel Generator</h1>
@@ -70,7 +99,7 @@ export default function HomeE() {
 
       <button
         onClick={handleSubmit}
-        style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer' , backgroundColor: 'red'}}
+        style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer', backgroundColor: 'red' }}
       >
         Submit
       </button>
