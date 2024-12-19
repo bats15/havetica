@@ -19,3 +19,9 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.texty--{
+  color: black;
+  padding: 0.2em;
+}
